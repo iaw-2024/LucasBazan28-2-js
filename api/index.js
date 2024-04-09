@@ -7,6 +7,8 @@ const app = express();
 app.set('views', path.join(__dirname, '../express'));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get("/cliente_servidor/:tabla?", (req, res) => {
     fs.readFile(path.join(__dirname, '../datos.json'), 'utf8', (err, data) => {
@@ -16,6 +18,7 @@ app.get("/cliente_servidor/:tabla?", (req, res) => {
     } else {
         const datos = JSON.parse(data);
         datos.tabla = req.params.tabla || null;
+        app.set('views', path.join(__dirname, '../public/cliente_servidor'));
         res.render('index', datos);
     }
     });
@@ -29,6 +32,7 @@ app.get("/express/:tabla?", (req, res) => {
     } else {
       const datos = JSON.parse(data);
       datos.tabla = req.params.tabla || null;
+      app.set('views', path.join(__dirname, '../express'));
       res.render('index', datos);
     }
   });
